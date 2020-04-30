@@ -56,7 +56,7 @@ public class AlgoUtil {
 	 * 						1
 	 * 				2				3
 	 * 			4		5		6
-	 * 		7	  9				  	8
+	 * 		7	  8				  	9
 	 * @return
 	 */
 	public static Tree getInitialTree() {
@@ -75,8 +75,8 @@ public class AlgoUtil {
 		
 		// level 3
 		root.left.left.left = new Tree(7);
-		root.left.left.right = new Tree(9);
-		root.right.left.right = new Tree(8);
+		root.left.left.right = new Tree(8);
+		root.right.left.right = new Tree(9);
 		
 		return root;
 	}
