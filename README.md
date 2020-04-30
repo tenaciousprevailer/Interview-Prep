@@ -1,6 +1,6 @@
 # Interview Preparation
 
-## Sorting Algorithms
+### Sorting Algorithms
 - [Bubble Sort](https://github.com/tenaciousprevailer/Interview-Prep/blob/master/src/_1_Sorting/BubbleSort.java "Bubble Sort")
 - [Selection Sort](https://github.com/tenaciousprevailer/Interview-Prep/blob/master/src/_1_Sorting/SelectionSort.java "Selection Sort")
 - [Insertion Sort](https://github.com/tenaciousprevailer/Interview-Prep/blob/master/src/_1_Sorting/InsertionSort.java "Insertion Sort")
@@ -8,7 +8,7 @@
 - [Quick Sort](https://github.com/tenaciousprevailer/Interview-Prep/blob/master/src/_1_Sorting/QuickSort.java "Quick Sort")
 - [Heap Sort](https://github.com/tenaciousprevailer/Interview-Prep/blob/master/src/_1_Sorting/HeapSort.java "Heap Sort")
 
-## Expression Evaluation
+### Expression Evaluation
 - [Infix To Postfix](https://github.com/tenaciousprevailer/Interview-Prep/blob/master/src/_2_ExpressionEvaluation/InfixToPostfix.java "Bubble Sort")
 - [Infix To Prefix](https://github.com/tenaciousprevailer/Interview-Prep/blob/master/src/_2_ExpressionEvaluation/InfixToPrefix.java "Selection Sort")
 - [Postfix To Infix](https://github.com/tenaciousprevailer/Interview-Prep/blob/master/src/_2_ExpressionEvaluation/PostfixToInfix.java "Insertion Sort")
