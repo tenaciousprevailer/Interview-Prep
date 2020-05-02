@@ -136,7 +136,8 @@ public class AlgoUtil {
 	
 	public static Integer[] getUnsortedIntegerArray(int size) {
 		Integer[] arr = new Integer[size];
-		int bound = size* size;
+		int bound = 10000;//Math.min(100, Math.abs(size*size));//Math.min(10000, Math.abs(size* size));
+		bound = Math.abs(bound);
 		Random random = new Random();
 		for(int i=0;i<size;i++) {
 			arr[i] = random.nextInt(bound);
@@ -153,6 +154,18 @@ public class AlgoUtil {
 	public static boolean isIntegerArraySorted(Integer[] arr, Comparator<Integer> comparator) {
 		Integer last = arr[0];
 		for(Integer i : arr) {
+			int compareVal = comparator.compare(i, last);
+			if(compareVal<0)
+				return false;
+			last=i;
+		}
+		return true;
+	}
+
+	public static boolean isIntegerArraySorted(Integer[] arr, int l, int r, Comparator<Integer> comparator) {
+		Integer last = arr[l];
+		for(int x = l; x <= r; x++) {
+			int i = arr[x];
 			int compareVal = comparator.compare(i, last);
 			if(compareVal<0)
 				return false;

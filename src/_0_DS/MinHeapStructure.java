@@ -1,4 +1,4 @@
-package _1_Sorting;
+package _0_DS;
 
 import java.util.Arrays;
 

@@ -2,11 +2,11 @@ package _1_Sorting;
 
 import java.util.Comparator;
 
-public class MergeSort implements Sorter<Integer>{
+public class MergeSortOptimized implements Sorter<Integer>{
 
 	private Comparator<Integer> comparator;
-	
-	public MergeSort(Comparator<Integer> comparator) {
+
+	public MergeSortOptimized(Comparator<Integer> comparator) {
 		this.comparator = comparator;
 	}
 	
@@ -29,8 +29,7 @@ public class MergeSort implements Sorter<Integer>{
 	}
 
 	private void merge(Integer[] arr, int l, int m, int r) {
-		if(arr[m] < arr[m+1]) return;
-
+		
 		// create two arrays
 		int[] arr1 = new int[m-l+1];
 		int[] arr2 = new int[r-m];

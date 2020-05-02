@@ -38,10 +38,10 @@ public class HeapSort implements Sorter<Integer> {
 	private void heapify(Integer[] arr, int rootNodeIdx, int lastElemIdx) {
 
 		int leftChildIdx = (rootNodeIdx * 2) +1;
-		int rightChildIdx = leftChildIdx + 1;
-		
+
 		if(leftChildIdx <= lastElemIdx) {
 			int maxElemIdx = leftChildIdx;
+			int rightChildIdx = leftChildIdx + 1;
 			if(rightChildIdx <= lastElemIdx) {
 				maxElemIdx = Math.max(arr[leftChildIdx], arr[rightChildIdx]) == arr[leftChildIdx]? leftChildIdx :rightChildIdx;
 			} 
