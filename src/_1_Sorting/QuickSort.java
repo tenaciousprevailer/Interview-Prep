@@ -30,11 +30,21 @@ public class QuickSort  implements Sorter<Integer>{
 
 	// 2 10 4 6 8 5, pivot 5
 	private int putPivotOnCorrectPos(Integer[] array, int l, int r) {
+
+		int m = (l+r)/2;
+		if(array[m] > array[l]) {
+			if(array[m] < array[r]) // l m r
+				AlgoUtil.swapArray(array, m , r);
+			// else l r m
+		} else if(array[l] < array[r]){ // m l r
+			AlgoUtil.swapArray(array, l , r);
+		}
+		// else m r l
+
 		int pivot = array[r];
-		
 		int leftPointer = l;
 		for(int i=l; i<r;i++) {
-			if(comparator.compare(pivot, array[i]) >= 0) {
+			if(array[i] <= pivot) {
 				AlgoUtil.swapArray(array, leftPointer, i);
 				leftPointer++;
 			}

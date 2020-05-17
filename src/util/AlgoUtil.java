@@ -135,12 +135,18 @@ public class AlgoUtil {
 	
 	
 	public static Integer[] getUnsortedIntegerArray(int size) {
+
+		Random r = new Random();
+		int low = 99;
+		int high = 999;
+		int result = r.nextInt(high-low) + low;
+
 		Integer[] arr = new Integer[size];
-		int bound = 10000;//Math.min(100, Math.abs(size*size));//Math.min(10000, Math.abs(size* size));
-		bound = Math.abs(bound);
-		Random random = new Random();
+//		int bound = 10000;//Math.min(100, Math.abs(size*size));//Math.min(10000, Math.abs(size* size));
+//		bound = Math.abs(bound);
+//		Random random = new Random();
 		for(int i=0;i<size;i++) {
-			arr[i] = random.nextInt(bound);
+			arr[i] = r.nextInt(high-low) + low;
 		}
 		return arr;
 	}

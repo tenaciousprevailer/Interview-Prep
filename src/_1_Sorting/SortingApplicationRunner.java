@@ -1,6 +1,7 @@
 package _1_Sorting;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.Instant;
 import java.util.*;
 
 import util.AlgoUtil;
@@ -8,16 +9,17 @@ import util.IntegerComparator;
 
 public class SortingApplicationRunner {
 
-	private static List<Class<? extends Sorter<Integer>>> sorter = Collections.unmodifiableList(
+	private static Comparator<Integer> compator = new IntegerComparator();
+	private static List<Sorter<Integer>> sorterList = Collections.unmodifiableList(
 			Arrays.asList(
-//					BubbleSort.class,
-//					SelectionSort.class,
-//					InsertionSort.class,
-//					MergeSort.class,
-//					HeapSort.class,
-//					QuickSort.class,
-					RaviSort.class
-					)
+//					new BubbleSort(compator),
+//					new SelectionSort(compator),
+//					new InsertionSort(compator),
+//					new MergeSort(compator),
+					new HeapSort(compator),
+					new QuickSort(compator),
+					new RaviSort(compator)
+				)
 			);
 	
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
@@ -34,47 +36,44 @@ public class SortingApplicationRunner {
 			boolean testCasesPassed = true;
 			Integer[] arr = AlgoUtil.getUnsortedIntegerArray(arrSize);
 			IntegerComparator ic = new IntegerComparator();
-			for(Class<? extends Sorter<Integer>> c : sorter) {
+			for(Sorter sorterIntstance : sorterList) {
 				Integer[] newArr = Arrays.copyOf(arr, arr.length);
-				Sorter<Integer> sorterIntstance = c.getDeclaredConstructor(Comparator.class).newInstance(ic);
-				startTime = System.currentTimeMillis();
+				startTime = getTime();
 				sorterIntstance.sort(newArr);
-				endTime = System.currentTimeMillis();
+				endTime = getTime();
 				testCasesPassed = AlgoUtil.isIntegerArraySorted(newArr, ic);
 				if(!testCasesPassed) {
-					System.out.println("Test Cases:" + (i+1) + " failed for:" + c.getName());
+					System.out.println("Test Cases:" + (i+1) + " failed for:" + sorterIntstance.getClass().getName());
 					System.out.println("Input");
 //					AlgoUtil.printArr(arr);
 					System.out.println("Output");
 //					AlgoUtil.printArr(newArr);
 					break;
 				} else {
-					pq.offer( "test-" + i + "-" + c.getSimpleName() + ":" + (endTime-startTime));
-//					System.out.println("i'm done:" + pq.peek());
+					pq.offer( "test-" + i + "-" + sorterIntstance.getClass().getSimpleName() + ":" + (endTime-startTime));
 				}
-				//AlgoUtil.printArr(newArr);
 			}
 			
 			if(!testCasesPassed) {
 				break;
 			}
 
-			// java
+			// timsort
 			Integer[] newArr = Arrays.copyOf(arr, arr.length);
-			startTime = System.currentTimeMillis();
+			startTime = getTime();
 			Arrays.sort(newArr);
-			endTime = System.currentTimeMillis();
+			endTime = getTime();
 			pq.offer( "test-" + i + "-" + "Timsort" + ":" + (endTime-startTime));
 
 			System.out.println("Test Cases:" + (i+1) + " Passed for all");
 		}
 
 		System.out.println("Results: "+ pq.size());
-		int top = sorter.size() * testCases;
+		int top = sorterList.size() * testCases;
 		HashMap<String, Integer> map = new HashMap<>();
 		while(!pq.isEmpty() ) {
 
-			if(pq.size() % (sorter.size() + 1) == 0) {
+			if(pq.size() % (sorterList.size() + 1) == 0) {
 				String y = pq.poll();
 				System.out.println("======>:" + y);
 				String key = y.split("-")[2].split(":")[0];
@@ -91,6 +90,10 @@ public class SortingApplicationRunner {
 		while(!algoPq.isEmpty()) {
 			System.out.println(algoPq.poll());
 		}
+	}
+
+	private static long getTime() {
+		return System.nanoTime();
 	}
 
 	/**
@@ -245,6 +248,6 @@ public class SortingApplicationRunner {
 
 
 	static int testCases = 10;
-	static int arrSize = 9999999;
+	static int arrSize = 1000000;
 }
 
