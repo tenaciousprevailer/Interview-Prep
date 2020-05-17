@@ -14,8 +14,8 @@ public class SortingApplicationRunner {
 //					SelectionSort.class,
 //					InsertionSort.class,
 //					MergeSort.class,
-					HeapSort.class,
-					QuickSort.class,
+//					HeapSort.class,
+//					QuickSort.class,
 					RaviSort.class
 					)
 			);
@@ -31,15 +31,15 @@ public class SortingApplicationRunner {
 		long startTime, endTime = 0;
 
 		for(int i=0;i<testCases;i++) {
-			boolean testCasesPassed = false;
+			boolean testCasesPassed = true;
 			Integer[] arr = AlgoUtil.getUnsortedIntegerArray(arrSize);
 			IntegerComparator ic = new IntegerComparator();
 			for(Class<? extends Sorter<Integer>> c : sorter) {
 				Integer[] newArr = Arrays.copyOf(arr, arr.length);
 				Sorter<Integer> sorterIntstance = c.getDeclaredConstructor(Comparator.class).newInstance(ic);
-				startTime = System.nanoTime();
+				startTime = System.currentTimeMillis();
 				sorterIntstance.sort(newArr);
-				endTime = System.nanoTime();
+				endTime = System.currentTimeMillis();
 				testCasesPassed = AlgoUtil.isIntegerArraySorted(newArr, ic);
 				if(!testCasesPassed) {
 					System.out.println("Test Cases:" + (i+1) + " failed for:" + c.getName());
@@ -50,6 +50,7 @@ public class SortingApplicationRunner {
 					break;
 				} else {
 					pq.offer( "test-" + i + "-" + c.getSimpleName() + ":" + (endTime-startTime));
+//					System.out.println("i'm done:" + pq.peek());
 				}
 				//AlgoUtil.printArr(newArr);
 			}
@@ -60,27 +61,27 @@ public class SortingApplicationRunner {
 
 			// java
 			Integer[] newArr = Arrays.copyOf(arr, arr.length);
-			startTime = System.nanoTime();
+			startTime = System.currentTimeMillis();
 			Arrays.sort(newArr);
-			endTime = System.nanoTime();
+			endTime = System.currentTimeMillis();
 			pq.offer( "test-" + i + "-" + "Timsort" + ":" + (endTime-startTime));
 
 			System.out.println("Test Cases:" + (i+1) + " Passed for all");
 		}
 
-		System.out.println("Results");
+		System.out.println("Results: "+ pq.size());
 		int top = sorter.size() * testCases;
 		HashMap<String, Integer> map = new HashMap<>();
 		while(!pq.isEmpty() ) {
 
 			if(pq.size() % (sorter.size() + 1) == 0) {
 				String y = pq.poll();
-//				System.out.println("======>:" + y);
+				System.out.println("======>:" + y);
 				String key = y.split("-")[2].split(":")[0];
 				map.put(key, map.getOrDefault(key, 0) + 1 );
 			} else {
 				String y = pq.poll();
-//				System.out.println("===X:" + y);
+				System.out.println("===X:" + y);
 			}
 		}
 
@@ -243,7 +244,7 @@ public class SortingApplicationRunner {
 	 */
 
 
-	static int testCases = 100;
-	static int arrSize = 3456;
+	static int testCases = 10;
+	static int arrSize = 9999999;
 }
 

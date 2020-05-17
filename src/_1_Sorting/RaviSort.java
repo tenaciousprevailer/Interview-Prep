@@ -2,19 +2,18 @@ package _1_Sorting;
 
 
 import util.AlgoUtil;
-import util.IntegerComparator;
 
 import java.util.Comparator;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class RaviSort implements Sorter<Integer>  {
 
     private Comparator<Integer> comparator;
+    private ExecutorService executor;
 
     public RaviSort(Comparator<Integer> comparator) {
         this.comparator = comparator;
+
     }
 
     @Override
@@ -22,52 +21,68 @@ public class RaviSort implements Sorter<Integer>  {
         sort(array, 0, array.length - 1);
     }
 
+    // 2 4 8 16 32 64 128 256 512 1024 2048 4096 8192 16384 32768 65536 131072 262144 524288 1048576 2097152
     final int SELECTION_SORT_THRESHOLD = 16;
     final int HEAP_SORT_THRESHOLD = 1024;
-    final int QUICK_SORT_THRESHOLD = 2048;
+    final int QUICK_SORT_THRESHOLD = 999999999;//(int) Math.pow(2, 30);
     final int MULTI_THREAD_SORT_THRESHOLD = QUICK_SORT_THRESHOLD;
 
-    // 2 4 8 16 32 64 128 256 512 1024 2048 4096 8192 16384 32768 65536 131072 262144 524288 1048576 2097152
     public void sort(Integer[] array, int l, int r) {
+//        System.out.println(QUICK_SORT_THRESHOLD);
         int size = r - l + 1;
         if( size <= SELECTION_SORT_THRESHOLD ) {
             selectionSort(array, l, r);
-        } else
-        if (size <= HEAP_SORT_THRESHOLD) {
+        }
+        else if (size <= HEAP_SORT_THRESHOLD) {
             heapSort(array, l, r);
         }
-//        else if(size <= QUICK_SORT_THRESHOLD){
-//            quickSort(array, l, r);
-//        }
-        else {
+        else if(size <= QUICK_SORT_THRESHOLD) {
             quickSort(array, l, r);
-//            multipleThreadSort(array, l, r);
+        }
+        else {
+            multipleThreadSort(array, l, r);
         }
     }
 
-//    public void multipleThreadSort(Integer[] array, int l, int r) {
-//        int size = r - l + 1;
-//        int batchCount = size / (MULTI_THREAD_SORT_THRESHOLD-1);
-//        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-//        CountDownLatch countDownLatch = new CountDownLatch(batchCount);
-//        int curStarting = 0;
-//        for(int c = 0; c < batchCount; c++) {
-//            Runnable sortingTask = new MultiThreadSorting(array,
-//                    curStarting,
-//                    Math.min(r, curStarting + (MULTI_THREAD_SORT_THRESHOLD-1)),
-//                    countDownLatch
-//            );
-//            curStarting += MULTI_THREAD_SORT_THRESHOLD;
-//            executor.submit(sortingTask);
-//        }
-//        try {
-//            countDownLatch.await();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } finally {
-//            executor.shutdown();
-//        }
-//    }
+    public void multipleThreadSort(Integer[] array, int l, int r) {
+        int size = r - l + 1;
+        int multiThreadSortThreshold = (int) MULTI_THREAD_SORT_THRESHOLD;
+        int batchCount = (size / multiThreadSortThreshold);
+        if(size % multiThreadSortThreshold > 0) {
+            batchCount++;
+        }
+        this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        BlockingQueue<String> blockingQueue = new LinkedTransferQueue<>();
+
+        CountDownLatch countDownLatch = new CountDownLatch(batchCount + 1); // +1 for merge worker
+
+        int startIdx = 0;
+        int endIdx = Math.min(r, startIdx + multiThreadSortThreshold-1);
+        for(int c = 0; c < batchCount; c++) {
+            Runnable sortingTask = new SortingWorker(
+                    array,
+                    startIdx,
+                    endIdx,
+                    countDownLatch,
+                    blockingQueue
+            );
+
+            executor.submit(sortingTask);
+
+            startIdx += multiThreadSortThreshold;
+            endIdx = Math.min(r, startIdx + multiThreadSortThreshold-1);
+        }
+
+        executor.submit(new SortingMergeWorker(array, countDownLatch, blockingQueue));
+
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            executor.shutdown();
+        }
+    }
 
     public void selectionSort(Integer[] array, int l, int r) {
         int ithMinIndex;
@@ -123,21 +138,6 @@ public class RaviSort implements Sorter<Integer>  {
         }
     }
 
-//    public static void main(String[] args) {
-//        Integer[] arr = AlgoUtil.getUnsortedIntegerArray(20);
-//        Integer[] newArr = Arrays.copyOf(arr, arr.length);
-//        AlgoUtil.printArr(arr);
-//        new RaviSort(null).heapSort(arr, 4, 14);
-//        if(AlgoUtil.isIntegerArraySorted(arr, 4,14,new IntegerComparator())) {
-//            System.out.println("Sorted");
-//        } else {
-//            System.out.println("Unsorted");
-//            AlgoUtil.printArr(arr);
-//        }
-//    }
-
-
-
     private void quickSort(Integer[] array, int l, int r) {
         if(l<r) {
             int pivotIndex = putPivotOnCorrectPos(array, l, r);
@@ -166,26 +166,100 @@ public class RaviSort implements Sorter<Integer>  {
         arr[pos2] = temp;
     }
 
-    class MultiThreadSorting implements Runnable {
+    class SortingWorker implements Runnable {
 
         private final Integer[] arr;
         private final int l;
         private final int r;
         private final CountDownLatch countDownLatch;
+        private final BlockingQueue<String> blockingQueue;
 
-        public MultiThreadSorting(Integer[] arr, int l, int r, CountDownLatch countDownLatch) {
+        public SortingWorker(Integer[] arr, int l, int r, CountDownLatch countDownLatch, BlockingQueue<String> blockingQueue) {
             this.arr = arr;
             this.l = l;
             this.r = r;
-            System.out.println("Size:" + (r-l+1) + ", l=" + l + ", r=" + r);
             this.countDownLatch = countDownLatch;
+            this.blockingQueue = blockingQueue;
         }
 
         @Override
         public void run() {
             sort(arr, l, r);
-            System.out.println(Thread.currentThread().getName() +" " + AlgoUtil.isIntegerArraySorted(arr,l,r, new IntegerComparator()) );
+            this.blockingQueue.add(l+":"+r);
             countDownLatch.countDown();
+        }
+    }
+
+    class SortingMergeWorker implements Runnable{
+        private final Integer[] arr;
+        private final CountDownLatch countDownLatch;
+        private final BlockingQueue<String> blockingQueue;
+
+        public SortingMergeWorker(Integer[] arr, CountDownLatch countDownLatch, BlockingQueue<String> blockingQueue) {
+            this.arr = arr;
+            this.countDownLatch = countDownLatch;
+            this.blockingQueue = blockingQueue;
+        }
+
+        @Override
+        public void run() {
+            Integer[] merged = null;
+            while(countDownLatch.getCount() > 1 || this.blockingQueue.size() > 0) {
+                try {
+                    String range = this.blockingQueue.poll(100,TimeUnit.MILLISECONDS);
+                    if(range != null) {
+                        merged = handleMergeOperation(merged, range);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    System.out.println("InterruptedException:" + e.getMessage());
+                }
+            }
+
+            System.arraycopy(merged, 0, arr, 0, merged.length);
+            countDownLatch.countDown();
+        }
+
+        private Integer[] handleMergeOperation(Integer[] merged, String range) {
+            String[] rangeArr = range.split(":");
+            int rangeStart = Integer.parseInt(rangeArr[0]), rangeEnd = Integer.parseInt(rangeArr[1]);
+
+            if(merged == null) {
+                merged = new Integer[rangeEnd - rangeStart + 1];
+                System.arraycopy(arr, rangeStart, merged, 0, merged.length);
+            } else {
+                merged = merge(
+                        merged, 0, merged.length-1,
+                        arr, Integer.parseInt(rangeArr[0]), Integer.parseInt(rangeArr[1]) );
+
+            }
+            return merged;
+        }
+
+        public Integer[] merge(Integer[] arr1, int l1, int r1, Integer[] arr2, int l2, int r2) {
+            Integer[] merged = new Integer[r1-l1+1   + r2-l2+1];
+            int counter1 = l1;
+            int counter2 = l2;
+            int mergedCounter = 0;
+
+            while(counter1 <= r1 && counter2 <= r2) {
+                if(arr1[counter1] < arr2[counter2]) {
+                    merged[mergedCounter++] = arr1[counter1++];
+                } else {
+                    merged[mergedCounter++] = arr2[counter2++];
+                }
+            }
+
+            while(counter1 <= r1) {
+                merged[mergedCounter++] = arr1[counter1++];
+            }
+
+            while(counter2 <= r2) {
+                merged[mergedCounter++] = arr2[counter2++];
+            }
+
+            return merged;
+
         }
     }
 
