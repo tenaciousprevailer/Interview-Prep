@@ -1,11 +1,9 @@
 package _1_Sorting;
 
-import java.lang.reflect.InvocationTargetException;
-import java.time.Instant;
-import java.util.*;
-
 import util.AlgoUtil;
 import util.IntegerComparator;
+
+import java.util.*;
 
 public class SortingApplicationRunner {
 
@@ -16,25 +14,36 @@ public class SortingApplicationRunner {
 //					new SelectionSort(compator),
 //					new InsertionSort(compator),
 //					new MergeSort(compator),
-					new HeapSort(compator),
-					new QuickSort(compator),
+//					new HeapSort(compator),
+//					new QuickSort(compator),
 					new RaviSort(compator)
+//					new QuickSortIterative(Integer::compareTo)
 				)
 			);
-	
-	public static void main(String[] args) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 
-		PriorityQueue<String> pq = new PriorityQueue<String>((a,b) ->
-				(int) (Long.parseLong(a.split("-")[1]) == Long.parseLong(b.split("-")[1]) ?
-										Long.parseLong(a.split(":")[1]) - Long.parseLong(b.split(":")[1]) :
-										Long.parseLong(a.split("-")[1]) - Long.parseLong(b.split("-")[1]))
-		);
+	public static void main(String[] args) throws IllegalArgumentException, SecurityException {
+
+		PriorityQueue<String> pq = new PriorityQueue<String>((a,b) -> {
+			int aTestNo = Integer.parseInt(a.split("-")[1]);
+			int bTestNo = Integer.parseInt(b.split("-")[1]);
+			int sameTest = aTestNo - bTestNo;
+			if(sameTest == 0) {
+				long aTime = Long.parseLong(a.split(":")[1]);
+				long bTime = Long.parseLong(b.split(":")[1]);
+				if(aTime == bTime) return 0;
+				if(aTime > bTime) return 1;
+				return -1;
+			}
+			return sameTest;
+		});
 
 		long startTime, endTime = 0;
 
 		for(int i=0;i<testCases;i++) {
 			boolean testCasesPassed = true;
+			System.out.println("Going to generate unsorted array");
 			Integer[] arr = AlgoUtil.getUnsortedIntegerArray(arrSize);
+			System.out.println("Generated unsorted array");
 			IntegerComparator ic = new IntegerComparator();
 			for(Sorter sorterIntstance : sorterList) {
 				Integer[] newArr = Arrays.copyOf(arr, arr.length);
@@ -43,19 +52,19 @@ public class SortingApplicationRunner {
 				endTime = getTime();
 				testCasesPassed = AlgoUtil.isIntegerArraySorted(newArr, ic);
 				if(!testCasesPassed) {
-					System.out.println("Test Cases:" + (i+1) + " failed for:" + sorterIntstance.getClass().getName());
-					System.out.println("Input");
+					System.out.println("Test Cases:" + (i+1) + " failed for:" + sorterIntstance.getClass().getName() + " " + (endTime-startTime));
+//					System.out.println("Input");
 //					AlgoUtil.printArr(arr);
-					System.out.println("Output");
+//					System.out.println("Output");
 //					AlgoUtil.printArr(newArr);
-					break;
+//					break;
 				} else {
 					pq.offer( "test-" + i + "-" + sorterIntstance.getClass().getSimpleName() + ":" + (endTime-startTime));
 				}
 			}
 			
 			if(!testCasesPassed) {
-				break;
+//				break;
 			}
 
 			// timsort
@@ -247,7 +256,21 @@ public class SortingApplicationRunner {
 	 */
 
 
-	static int testCases = 10;
-	static int arrSize = 1000000;
+	static int testCases = 1;
+	static int[] arrSizeArr = {0,
+			9, 				// 219785
+			99, 			// 506527
+			999,			// 1419209
+			9999,			// 9370325
+			99999,			// 57996778
+			999999,			// 420802033
+			9999999,		// 3682662962
+							// 12648872242
+			99999999,		// 24414973311
+			999999999
+	};
+
+	static int[] abc = {1048576, 2097152,4194304};
+	static int arrSize = arrSizeArr[5];
 }
 

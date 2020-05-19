@@ -1,11 +1,11 @@
 package util;
 
+import ent.Node;
+import ent.Tree;
+
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Random;
-
-import ent.Node;
-import ent.Tree;
 
 public class AlgoUtil {
 
@@ -147,6 +147,15 @@ public class AlgoUtil {
 //		Random random = new Random();
 		for(int i=0;i<size;i++) {
 			arr[i] = r.nextInt(high-low) + low;
+		}
+		return arr;
+	}
+
+	public static Integer[] getSortedIntegerArray(int size) {
+
+		Integer[] arr = new Integer[size];
+		for(int i=0;i<size;i++) {
+			arr[i] = i;
 		}
 		return arr;
 	}
