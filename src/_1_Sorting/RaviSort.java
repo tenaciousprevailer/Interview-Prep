@@ -1,8 +1,6 @@
 package _1_Sorting;
 
-import java.util.ArrayDeque;
 import java.util.Comparator;
-import java.util.Deque;
 
 public class RaviSort implements Sorter<Integer>  {
 
@@ -20,22 +18,24 @@ public class RaviSort implements Sorter<Integer>  {
     private final int SELECTION_SORT_THRESHOLD = 16;
     private final int INSERTION_SORT_THRESHOLD = 256;
     private final int HEAP_SORT_THRESHOLD = 4096;
-    private final int HYBRID_QUICK_SORT_THRESHOLD =  8192;//1048576;
-    private final int HYBRID_MERGE_SORT_BATCH_SIZE = 64;
+    private final int HYBRID_QUICK_SORT_THRESHOLD =  1048576;
+    private final int HYBRID_MERGE_SORT_BATCH_SIZE = HYBRID_QUICK_SORT_THRESHOLD;
 
     public void sort(Integer[] array, int l, int r) {
         int size = r - l + 1;
         if( size <= SELECTION_SORT_THRESHOLD ) {
             selectionSort(array, l, r);
         }
-//        else if(size <= INSERTION_SORT_THRESHOLD && isNearlySorted(array, l, r)) {
-//            insertionSort(array, l, r);
-//        }
+        else if(size <= INSERTION_SORT_THRESHOLD && isNearlySorted(array, l, r)) {
+            insertionSort(array, l, r);
+        }
         else if (size <= HEAP_SORT_THRESHOLD) {
             heapSort(array, l, r);
-        } else if (size <= HYBRID_QUICK_SORT_THRESHOLD) {
+        }
+        else if (size <= HYBRID_QUICK_SORT_THRESHOLD) {
             hybridQuickSort(array, l, r);
-        } else {
+        }
+        else {
             hybridMergeSort(array, l, r);
         }
     }
@@ -48,6 +48,16 @@ public class RaviSort implements Sorter<Integer>  {
                 swapArray(array, i, ithMinIndex);
             }
         }
+    }
+
+    private int findMinValueIndex(Integer[] arr, int start, int end) {
+        int minValIndex = start;
+        for(int i = start+1 ;i <= end; i++) {
+            if(arr[i] - arr[minValIndex] < 0) {
+                minValIndex = i;
+            }
+        }
+        return minValIndex;
     }
 
     private static boolean isNearlySorted(Integer[] array, int l, int r) {
@@ -67,22 +77,12 @@ public class RaviSort implements Sorter<Integer>  {
         for(int i=l+1; i<=r; i++) {
             int curVal = arr[i];
             int j = i-1;
-            while(j>-1 && curVal < arr[j]) {
+            while(j>l-1 && curVal < arr[j]) {
                 arr[j+1] = arr[j];
                 arr[j] = curVal;
                 j--;
             }
         }
-    }
-
-    private int findMinValueIndex(Integer[] arr, int start, int end) {
-        int minValIndex = start;
-        for(int i = start+1 ;i <= end; i++) {
-            if(arr[i] - arr[minValIndex] < 0) {
-                minValIndex = i;
-            }
-        }
-        return minValIndex;
     }
 
    public void heapSort(Integer[] arr, int l, int lastElemIdx) {
@@ -165,59 +165,52 @@ public class RaviSort implements Sorter<Integer>  {
         }
     }
 
-    private void hybridMergeSort(Integer[] array, int l, int r) {
-        Deque<Range> stack = sortChunk(array, l, r);
-        mergeChunk(array, stack);
-    }
 
-    private void mergeChunk(Integer[] array, Deque<Range> stack) {
-        Deque<Range> stackOut = stack, stackIn = new ArrayDeque(stackOut.size()), stackTemp;
-        System.out.println("stack size:" + stack.size());
-        Range r1,r2;
-        int left, mid, right;
-        boolean dscMode = true;
-        while(stackIn.size() + stackOut.size() > 1) {
-            while (stackOut.size() > 1) {
-                r1 = stackOut.poll();
-                r2 = stackOut.poll();
-                if(dscMode) {
-                    left = r2.start;
-                    mid = r2.end;
-                    right = r1.end;
-                } else {
-                    left = r1.start;
-                    mid = r1.end;
-                    right = r2.end;
-                }
-                merge(array, left, mid, right);
-                stackIn.push(new Range(left, right));
+
+    private void hybridMergeSort(Integer[] array, int l, int r) {
+
+        class FixedSizedStack<T> implements IStack<T> {
+
+            private Object[] arr;
+            private int length;
+
+            public FixedSizedStack(int maxCapacity) {
+                arr = new Object[maxCapacity];
             }
-            stackTemp = stackOut;
-            stackOut = stackIn;
-            stackIn = stackTemp;
-            dscMode = !dscMode;
-            if(stackOut.size() == 1 && stackIn.size() == 1) {
-                if( stackOut.peek().start < stackIn.peek().start ) {
-                    dscMode = true;
-                } else {
-                    dscMode = false;
-                }
-                stackOut.push(stackIn.poll());
+
+            @Override
+            public void push(T elem) {
+                if(length >= arr.length) throw new RuntimeException("No capacity to insert");
+                arr[length++] = elem;
+            }
+
+            @Override
+            public T pop() {
+                if(length == 0) throw new RuntimeException("No Element to Pop");
+                T elem = (T) arr[--length];
+                arr[length] = null;
+                return elem;
+            }
+
+            @Override
+            public T peek() {
+                if(length == 0) throw new RuntimeException("No Element to Peek");
+                return (T) arr[length-1];
+            }
+
+            @Override
+            public int size() {
+                return length;
             }
         }
 
-        System.out.println();
-    }
-
-    private Deque<Range> sortChunk(Integer[] array, int l, int r) {
         int multiple = (r-l + 1) / HYBRID_MERGE_SORT_BATCH_SIZE;
-        Deque<Range> stack = new ArrayDeque((multiple+1));
+        FixedSizedStack<Range> stack = new FixedSizedStack((multiple+1));
 
         int curL = 0, curR = HYBRID_MERGE_SORT_BATCH_SIZE-1;
         for (int i = 0; i < multiple; i++) {
             sort(array, curL, curR);
-            Range range = new Range(curL, curR);
-            stack.push(range);
+            stack.push(new Range(curL, curR));
             curL += HYBRID_MERGE_SORT_BATCH_SIZE;
             curR += HYBRID_MERGE_SORT_BATCH_SIZE;
         }
@@ -225,23 +218,68 @@ public class RaviSort implements Sorter<Integer>  {
         if(curL < r) {
             curR = r;
             sort(array, curL, curR);
-            Range range = new Range(curL, curR);
-            stack.push(range);
+            stack.push(new Range(curL, curR));
         }
-        return stack;
+
+        FixedSizedStack<Range> stackOut = stack;
+        FixedSizedStack<Range> stackIn = new FixedSizedStack(stackOut.size());
+        FixedSizedStack<Range> stackTemp;
+
+        boolean dscMode = true;
+        while(stackIn.size() + stackOut.size() > 2) {
+            while (stackOut.size() > 1) {
+                handleMerge(array, stackOut, stackIn, dscMode);
+            }
+            stackTemp = stackOut;
+            stackOut = stackIn;
+            stackIn = stackTemp;
+            dscMode = !dscMode;
+        }
+
+        if(stackOut.size() == 1) {
+            if( stackOut.peek().start < stackIn.peek().start ) dscMode = true;
+            else dscMode = false;
+            stackOut.push(stackIn.pop());
+        }
+        handleMerge(array, stackOut, stackIn, dscMode);
     }
 
-    private void merge(Integer[] arr, int l, int m, int r) {
-        if(arr[m] < arr[m+1]) return;
+    private void handleMerge(Integer[] array, IStack<Range> stackOut, IStack<Range> stackIn, boolean dscMode) {
+        Range r1;
+        Range r2;
+        int left;
+        int mid;
+        int mid2;
+        int right;
+        r1 = stackOut.pop();
+        r2 = stackOut.pop();
+        if(dscMode) {
+            left = r2.start;
+            mid = r2.end;
+            mid2 = r1.start;
+            right = r1.end;
+        } else {
+            left = r1.start;
+            mid = r1.end;
+            mid2 = r2.start;
+            right = r2.end;
+        }
+        merge(array, left, mid, mid2, right);
+        stackIn.push(new Range(left, right));
+    }
 
-        int[] leftArr = new int[m-l+1];
-        int[] rightArr = new int[r-m];
+    private void merge(Integer[] arr, int l, int m1, int m2, int r) {
+        if(arr[m1] < arr[m1+1]) return;
+
+        int[] leftArr = new int[m1-l+1];
+        int[] rightArr = new int[r-m2+1];
 
         int tmpCounter = l;
         for(int i=0;i<leftArr.length;i++) {
             leftArr[i] = arr[tmpCounter++];
         }
 
+        tmpCounter = m2;
         for(int i=0;i<rightArr.length;i++) {
             rightArr[i] = arr[tmpCounter++];
         }
@@ -273,4 +311,11 @@ public class RaviSort implements Sorter<Integer>  {
         arr[pos2] = temp;
     }
 
+}
+
+interface IStack<T> {
+    void push(T elem);
+    T pop();
+    T peek();
+    int size();
 }

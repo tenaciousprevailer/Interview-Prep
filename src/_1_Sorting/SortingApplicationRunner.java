@@ -10,14 +10,16 @@ public class SortingApplicationRunner {
 	private static Comparator<Integer> compator = new IntegerComparator();
 	private static List<Sorter<Integer>> sorterList = Collections.unmodifiableList(
 			Arrays.asList(
-//					new BubbleSort(compator),
-//					new SelectionSort(compator),
+//					new BubbleSort(compator)
+					new SelectionSort(compator)
 //					new InsertionSort(compator),
 //					new MergeSort(compator),
 //					new HeapSort(compator),
 //					new QuickSort(compator),
-					new RaviSort(compator)
+//					new RaviSort(compator)
 //					new QuickSortIterative(Integer::compareTo)
+//					new QuickSort(compator),
+//					new RaviBinaryHeapSort<>()
 				)
 			);
 
@@ -41,9 +43,9 @@ public class SortingApplicationRunner {
 
 		for(int i=0;i<testCases;i++) {
 			boolean testCasesPassed = true;
-			System.out.println("Going to generate unsorted array");
+//			System.out.println("Going to generate unsorted array");
 			Integer[] arr = AlgoUtil.getUnsortedIntegerArray(arrSize);
-			System.out.println("Generated unsorted array");
+//			System.out.println("Generated unsorted array");
 			IntegerComparator ic = new IntegerComparator();
 			for(Sorter sorterIntstance : sorterList) {
 				Integer[] newArr = Arrays.copyOf(arr, arr.length);
@@ -64,41 +66,41 @@ public class SortingApplicationRunner {
 			}
 			
 			if(!testCasesPassed) {
-//				break;
+				break;
 			}
 
 			// timsort
-			Integer[] newArr = Arrays.copyOf(arr, arr.length);
-			startTime = getTime();
-			Arrays.sort(newArr);
-			endTime = getTime();
-			pq.offer( "test-" + i + "-" + "Timsort" + ":" + (endTime-startTime));
+//			Integer[] newArr = Arrays.copyOf(arr, arr.length);
+//			startTime = getTime();
+//			Arrays.sort(newArr);
+//			endTime = getTime();
+//			pq.offer( "test-" + i + "-" + "Timsort" + ":" + (endTime-startTime));
 
 			System.out.println("Test Cases:" + (i+1) + " Passed for all");
 		}
 
-		System.out.println("Results: "+ pq.size());
-		int top = sorterList.size() * testCases;
-		HashMap<String, Integer> map = new HashMap<>();
-		while(!pq.isEmpty() ) {
-
-			if(pq.size() % (sorterList.size() + 1) == 0) {
-				String y = pq.poll();
-				System.out.println("======>:" + y);
-				String key = y.split("-")[2].split(":")[0];
-				map.put(key, map.getOrDefault(key, 0) + 1 );
-			} else {
-				String y = pq.poll();
-				System.out.println("===X:" + y);
-			}
-		}
-
-		PriorityQueue<Map.Entry<String, Integer>> algoPq = new PriorityQueue<Map.Entry<String, Integer>>((a,b) -> b.getValue() - a.getValue());
-		algoPq.addAll(map.entrySet());
-
-		while(!algoPq.isEmpty()) {
-			System.out.println(algoPq.poll());
-		}
+//		System.out.println("Results: "+ pq.size());
+//		int top = sorterList.size() * testCases;
+//		HashMap<String, Integer> map = new HashMap<>();
+//		while(!pq.isEmpty() ) {
+//
+//			if(pq.size() % (sorterList.size() + 1) == 0) {
+//				String y = pq.poll();
+//				System.out.println("======>:" + y);
+//				String key = y.split("-")[2].split(":")[0];
+//				map.put(key, map.getOrDefault(key, 0) + 1 );
+//			} else {
+//				String y = pq.poll();
+//				System.out.println("===X:" + y);
+//			}
+//		}
+//
+//		PriorityQueue<Map.Entry<String, Integer>> algoPq = new PriorityQueue<Map.Entry<String, Integer>>((a,b) -> b.getValue() - a.getValue());
+//		algoPq.addAll(map.entrySet());
+//
+//		while(!algoPq.isEmpty()) {
+//			System.out.println(algoPq.poll());
+//		}
 	}
 
 	private static long getTime() {
@@ -256,7 +258,7 @@ public class SortingApplicationRunner {
 	 */
 
 
-	static int testCases = 1;
+	static int testCases = 10;
 	static int[] arrSizeArr = {0,
 			9, 				// 219785
 			99, 			// 506527
@@ -271,6 +273,6 @@ public class SortingApplicationRunner {
 	};
 
 	static int[] abc = {1048576, 2097152,4194304};
-	static int arrSize = arrSizeArr[5];
+	static int arrSize = arrSizeArr[4];
 }
 
