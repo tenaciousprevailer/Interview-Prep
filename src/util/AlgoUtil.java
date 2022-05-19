@@ -161,9 +161,11 @@ public class AlgoUtil {
 	}
 	
 	public static void swapArray(Object[] arr, int pos1,int  pos2) {
-		Object temp = arr[pos1];
-		arr[pos1] = arr[pos2];
-		arr[pos2] = temp;
+		if (pos1 != pos2) {
+			Object temp = arr[pos1];
+			arr[pos1] = arr[pos2];
+			arr[pos2] = temp;
+		}
 	}
 	
 	public static boolean isIntegerArraySorted(Integer[] arr, Comparator<Integer> comparator) {
