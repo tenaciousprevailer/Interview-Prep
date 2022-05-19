@@ -1,5 +1,6 @@
 package _1_Sorting;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 public class MergeSort implements Sorter<Integer>{
@@ -12,59 +13,41 @@ public class MergeSort implements Sorter<Integer>{
 	
 	@Override
 	public void sort(Integer[] arr) {
-		
-		sort(arr, 0, arr.length-1);
-		
+		if (arr.length > 1) {
+			sort(arr, 0, arr.length - 1);
+		}
 	}
-	
+
 	private void sort(Integer[] arr, int l, int r) {
-		
 		if(l<r) {
 			int m = (l+r)/2;
 			sort(arr, l, m);
 			sort(arr, m+1, r);
-			merge(arr, l, m , r);
+			merge(arr, l, m, m+1, r);
 		}
-		
 	}
 
-	private void merge(Integer[] arr, int l, int m, int r) {
-		if(arr[m] < arr[m+1]) return;
+	// 0 3 7 -> left 0 1 2 3 , right 4 5 6 7
+	private void merge(Integer[] arr, int leftL, int leftR, int rightL, int rightR) {
 
-		// create two arrays
-		int[] arr1 = new int[m-l+1];
-		int[] arr2 = new int[r-m];
-		
-		//copy elements into the two
-		int tmpCounter = l;
-		for(int i=0;i<arr1.length;i++) {
-			arr1[i] = arr[tmpCounter++];
-		}
-		
-		tmpCounter = m+1; // not rquird
-		for(int i=0;i<arr2.length;i++) {
-			arr2[i] = arr[tmpCounter++];
-		}
-		
-		// for both arrays
-		int arr1C = 0, arr2C = 0, arrC = l;
-		while(arr1C < arr1.length && arr2C < arr2.length) {
-			if(arr1[arr1C] < arr2[arr2C]) {
-				arr[arrC++] = arr1[arr1C++];
+		Integer[] leftArr = Arrays.copyOfRange(arr, leftL, leftR + 1);
+		Integer[] rightArr = Arrays.copyOfRange(arr, rightL, rightR + 1);
+
+		int leftArrIdx = 0, rightArrIdx = 0, i = leftL;
+		while(leftArrIdx < leftArr.length && rightArrIdx < rightArr.length) {
+			if(leftArr[leftArrIdx] < rightArr[rightArrIdx]) {
+				arr[i++] = leftArr[leftArrIdx++];
 			} else {
-				arr[arrC++] = arr2[arr2C++];
+				arr[i++] = rightArr[rightArrIdx++];
 			}
 		}
-		
-		
-		// for arr1
-		while(arr1C < arr1.length) {
-			arr[arrC++] = arr1[arr1C++];
+
+		while(leftArrIdx < leftArr.length) {
+			arr[i++] = leftArr[leftArrIdx++];
 		}
-		
-		// for arr2
-		while(arr2C < arr2.length) {
-			arr[arrC++] = arr2[arr2C++];
+
+		while(rightArrIdx < rightArr.length) {
+			arr[i++] = rightArr[rightArrIdx++];
 		}
 	}
 
