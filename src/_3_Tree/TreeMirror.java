@@ -3,8 +3,6 @@ package _3_Tree;
 import ent.Tree;
 import util.AlgoUtil;
 
-import java.util.LinkedList;
-
 public class TreeMirror {
 
     public static void main(String[] args) {
@@ -21,14 +19,12 @@ public class TreeMirror {
         if(org == null) return org;
 
         if(org.left != null) {
-            Tree right = new Tree(org.left.val);
-            mirror.right = right;
+            mirror.right = new Tree(org.left.val);
             mirror(org.left, mirror.right);
         }
 
         if(org.right != null) {
-            Tree left = new Tree(org.right.val);
-            mirror.left = left;
+            mirror.left = new Tree(org.right.val);
             mirror(org.right, mirror.left);
         }
 

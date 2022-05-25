@@ -2,12 +2,14 @@ package _3_Tree;
 
 import ent.Tree;
 
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Stack;
 
-public class PostOrderTreeTravesorIterative implements ITreeTravesor {
+public class PostOrderTreeTraveserIterative implements ITreeTraveser {
 
-    @Override
-    public void traverse(Tree root) {
+//    @Override
+    public void traverse0(Tree root) {
         Stack<Tree> treeStack = new Stack<>();
         treeStack.push(root);
 
@@ -49,5 +51,33 @@ public class PostOrderTreeTravesorIterative implements ITreeTravesor {
 
         }
     }
+
+    /**
+     *
+     * @param root
+     */
+    @Override
+    public void traverse(Tree root) {
+
+        Deque<Tree>  stack = new LinkedList<Tree>();
+        stack.push(root);
+        Tree lastPrintedTree = null;
+
+        while(stack.size() > 0) {
+            Tree currentHead = stack.pop();
+            if(currentHead != null) {
+                if(currentHead.right != lastPrintedTree) {
+                    stack.push(currentHead);
+                    stack.push(currentHead.right);
+                    stack.push(currentHead.left);
+                } else {
+                    System.out.print(currentHead.val + " ");
+                    lastPrintedTree = currentHead;
+                }
+            } else lastPrintedTree = null; //  to print leaf nodes
+
+        }
+    }
+
 
 }

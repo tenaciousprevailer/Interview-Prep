@@ -1,8 +1,8 @@
 package _1_Sorting;
 
-import java.util.Comparator;
-
 import util.AlgoUtil;
+
+import java.util.Comparator;
 
 public class QuickSort  implements Sorter<Integer>{
 
@@ -27,18 +27,34 @@ public class QuickSort  implements Sorter<Integer>{
 		}
 	}
 
+	private int putPivotOnCorrectPos0(Integer[] array, int l, int r) {
+		int pivotElem = array[r];
+		int left = l, right = r-1;
+		while (left < right) {
+			if (array[left] <= pivotElem) {
+				left++;
+			} else {
+				AlgoUtil.swapArray(array, left, right);
+				right--;
+			}
+		}
+		int pivotIdx = left;
+		AlgoUtil.swapArray(array, pivotIdx, r);
+		return pivotIdx;
+	}
+
 
 	// 2 10 4 6 8 5, pivot 5
 	private int putPivotOnCorrectPos(Integer[] array, int l, int r) {
 
-		int m = (l+r)/2;
-		if(array[m] > array[l]) {
-			if(array[m] < array[r]) // l m r
-				AlgoUtil.swapArray(array, m , r);
-			// else l r m
-		} else if(array[l] < array[r]){ // m l r
-			AlgoUtil.swapArray(array, l , r);
-		}
+//		int m = (l+r)/2;
+//		if(array[m] > array[l]) {
+//			if(array[m] < array[r]) // l m r
+//				AlgoUtil.swapArray(array, m , r);
+//			// else l r m
+//		} else if(array[l] < array[r]){ // m l r
+//			AlgoUtil.swapArray(array, l , r);
+//		}
 		// else m r l
 
 		int pivot = array[r];

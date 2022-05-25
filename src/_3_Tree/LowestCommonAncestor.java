@@ -7,30 +7,30 @@ public class LowestCommonAncestor {
 
     public static void main(String[] args) {
         Tree root = AlgoUtil.getInitialTree();
-        Tree lowestCommonAncestor = findLowestCommonAncestor(root, 8, 7);
-        System.out.println(lowestCommonAncestor.val);
+        Tree lowestCommonAncestor0 = findLCA(root, 5, 12);
+        System.out.println(lowestCommonAncestor0);
     }
 
-    private static boolean foundFirst = false;
-    private static boolean foundSecond = false;
+    static boolean foundT1 = false;
+    static boolean foundT2 = false;
+    private static Tree findLCA(Tree root, int t1, int t2) {
+        if(root == null) return null;
 
-    private static Tree findLowestCommonAncestor(Tree node, int n1, int n2) {
-        if(node == null) return null;
-        if(node.val == n1){
-            foundFirst = true;
-            return node;
-        }
-        if(node.val == n2){
-            foundSecond = true;
-            return node;
-        }
+        // left
+        Tree leftResult = findLCA(root.left, t1, t2);
+        if(leftResult != null) return leftResult;
 
-        Tree leftNode = findLowestCommonAncestor(node.left, n1, n2);
-        Tree rightNode = findLowestCommonAncestor(node.right, n1, n2);
+        // right
+        Tree rightResult = findLCA(root.right, t1, t2);
+        if(rightResult != null) return rightResult;
 
-        if(leftNode != null && rightNode != null) return node;
-        return leftNode != null ? leftNode : rightNode;
+        // root
+        if(foundT1 && foundT2) return root;
+        else if(root.val == t1) foundT1 = true;
+        else if(root.val == t2) foundT2 = true;
 
+        // base
+        return null;
     }
 
 }

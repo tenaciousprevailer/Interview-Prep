@@ -2,12 +2,36 @@ package _4_Fault;
 
 import util.AlgoUtil;
 
+import java.util.LinkedHashSet;
+
 public class LeastRecentlyUsed {
 
 	public static void main(String[] args) {
 		int[] pages = {7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2};
 		int pageSlot = 4;
 		calculate(pages, pageSlot);
+
+		int pageFault0 = calculate0(pages, pageSlot);
+		System.out.println("Total page fault:" + pageFault0);
+	}
+
+	private static int calculate0(int[] pages, int pageSlot) {
+		int faults = pageSlot;
+		LinkedHashSet<Integer> linkedPages = new LinkedHashSet<>();
+		for (int i = 0; i < pageSlot; i++) {
+			linkedPages.add(pages[i]);
+		}
+
+		int pageHits = 0;
+		for (int i = pageSlot; i < pages.length; i++) {
+			if(!linkedPages.remove(pages[i])) {
+				faults++;
+				linkedPages.remove(linkedPages.stream().findFirst().get());
+			} else pageHits++;
+			linkedPages.add(pages[i]);
+		}
+		System.out.println("PageHits:" + pageHits);
+		return faults;
 	}
 
 	private static void calculate(int[] pages, int pageSlot) {

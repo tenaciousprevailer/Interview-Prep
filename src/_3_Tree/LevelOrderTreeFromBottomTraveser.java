@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
-public class LevelOrderTreeFromBottomTravesor implements ITreeTravesor {
+public class LevelOrderTreeFromBottomTraveser implements ITreeTraveser {
 
     @Override
     public void traverse(Tree leaf) {
@@ -36,4 +36,5 @@ public class LevelOrderTreeFromBottomTravesor implements ITreeTravesor {
             System.out.print(stack.pop().val + " ");
         }
     }
+
 }

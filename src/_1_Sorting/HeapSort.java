@@ -1,8 +1,8 @@
 package _1_Sorting;
 
-import java.util.Comparator;
-
 import util.AlgoUtil;
+
+import java.util.Comparator;
 
 public class HeapSort implements Sorter<Integer> {
 

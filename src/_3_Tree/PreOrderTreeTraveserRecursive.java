@@ -2,7 +2,7 @@ package _3_Tree;
 
 import ent.Tree;
 
-public class PreOrderTreeTravesorRecursive implements ITreeTravesor {
+public class PreOrderTreeTraveserRecursive implements ITreeTraveser {
 
     @Override
     public void traverse(Tree leaf) {

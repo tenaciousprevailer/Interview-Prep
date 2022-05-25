@@ -11,11 +11,11 @@ public class SortingApplicationRunner {
 	private static List<Sorter<Integer>> sorterList = Collections.unmodifiableList(
 			Arrays.asList(
 //					new BubbleSort(compator)
-					new SelectionSort(compator)
-//					new InsertionSort(compator),
-//					new MergeSort(compator),
-//					new HeapSort(compator),
-//					new QuickSort(compator),
+//					new SelectionSort(compator)
+//					new InsertionSort(compator)
+//					new MergeSort(compator)
+//					new HeapSort(compator)
+					new QuickSort(compator)
 //					new RaviSort(compator)
 //					new QuickSortIterative(Integer::compareTo)
 //					new QuickSort(compator),

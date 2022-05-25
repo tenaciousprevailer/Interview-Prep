@@ -5,7 +5,7 @@ import ent.Tree;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class LevelOrderTreeFromTopTravesor implements ITreeTravesor {
+public class LevelOrderTreeFromTopTraveser implements ITreeTraveser {
 
     @Override
     public void traverse(Tree leaf) {
@@ -27,5 +27,21 @@ public class LevelOrderTreeFromTopTravesor implements ITreeTravesor {
             if(tree.right != null)
                 queue.add(tree.right);
         }
+    }
+
+    public void traverse0(Tree root) {
+
+        Queue<Tree> queue = new LinkedList<>();
+        queue.add(root); // addLast
+        while(queue.size() > 0) {
+            Tree currentHead = queue.poll(); // removeFirst
+            if(currentHead != null) {
+                System.out.print(currentHead.val + " ");
+                queue.add(currentHead.left);
+                queue.add(currentHead.right);
+            }
+
+        }
+
     }
 }
