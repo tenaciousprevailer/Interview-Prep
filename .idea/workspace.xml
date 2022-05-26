@@ -2,29 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fda66dcc-7f9c-4bb5-a639-24970636c070" name="Default Changelist" comment="MergeSort updated">
-      <change afterPath="$PROJECT_DIR$/src/_3_Tree/InorderTreeTraveserIterative.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/_3_Tree/PreOrderTreeTraveserIterative.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_1_Sorting/HeapSort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_1_Sorting/HeapSort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_1_Sorting/QuickSort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_1_Sorting/QuickSort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_1_Sorting/SortingApplicationRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_1_Sorting/SortingApplicationRunner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_3_Tree/ITreeTravesor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_3_Tree/ITreeTraveser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_3_Tree/InorderTreeTravesorIterative.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_3_Tree/InorderTreeTravesorRecursive.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_3_Tree/InorderTreeTraverseRecursive.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_3_Tree/LevelOrderTreeFromBottomTravesor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_3_Tree/LevelOrderTreeFromBottomTraveser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_3_Tree/LevelOrderTreeFromTopTravesor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_3_Tree/LevelOrderTreeFromTopTraveser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_3_Tree/LowestCommonAncestor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_3_Tree/LowestCommonAncestor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_3_Tree/NodePathFromChildPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_3_Tree/NodePathFromChildPrinter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_3_Tree/PostOrderTreeTravesorIterative.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_3_Tree/PostOrderTreeTraveserIterative.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_3_Tree/PostOrderTreeTravesorRecursive.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_3_Tree/PostOrderTreeTraveserRecursive.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_3_Tree/PreOrderTreeTravesorIterative.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_3_Tree/PreOrderTreeTravesorRecursive.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_3_Tree/PreOrderTreeTraveserRecursive.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_3_Tree/TraverseBoundaryNodes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_3_Tree/TraverseBoundaryNodes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_3_Tree/TreeMirror.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_3_Tree/TreeMirror.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_3_Tree/TreeTraversalRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_3_Tree/TreeTraversalRunner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_4_Fault/FIFOPageFaultCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_4_Fault/FIFOPageFaultCalculator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_4_Fault/LeastFrequentlyUsed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_4_Fault/LeastFrequentlyUsed.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_4_Fault/LeastRecentlyUsed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/_4_Fault/LeastRecentlyUsed.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -217,7 +195,7 @@
       <workItem from="1629276145768" duration="10935000" />
       <workItem from="1639298761853" duration="20118000" />
       <workItem from="1652945302067" duration="18053000" />
-      <workItem from="1652990331462" duration="17537000" />
+      <workItem from="1652990331462" duration="18013000" />
     </task>
     <task id="LOCAL-00001" summary="idea files">
       <created>1652965348896</created>
@@ -261,7 +239,21 @@
       <option name="project" value="LOCAL" />
       <updated>1652971749184</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="MergeSort updated">
+      <created>1653493390791</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1653493390791</updated>
+    </task>
+    <task id="LOCAL-00008" summary="MergeSort updated">
+      <created>1653493395126</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1653493395126</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
