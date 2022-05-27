@@ -80,6 +80,28 @@ public class AlgoUtil {
 		
 		return root;
 	}
+
+
+	public static Tree getInitialBSTTree() {
+		// level 0
+		Tree node1 = new Tree(1);
+		Tree node2 = new Tree(2);
+		Tree node3 = new Tree(3);
+		Tree node4 = new Tree(4);
+		Tree node5 = new Tree(5);
+		Tree node6 = new Tree(6);
+		Tree node7 = new Tree(7);
+
+		node4.left = node2;
+		node2.left = node1;
+		node2.right = node3;
+
+		node4.right = node6;
+		node6.left = node5;
+		node6.right = node7;
+
+		return node4;
+	}
 	
 	public static Node getInitialLinkedList() {
 		Node head = new Node(1);

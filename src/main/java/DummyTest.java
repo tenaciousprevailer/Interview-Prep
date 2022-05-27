@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class DummyTest {
     enum Direction {
@@ -26,6 +27,5 @@ public class DummyTest {
                         .thenComparingInt(o -> ((DirectedPosition) o[1]).y)
         );
         int a = 999999999;
-
     }
 }
