@@ -17,7 +17,6 @@ class KthSmallestElementInBSTFinderImpl implements KthSmallestElementInBSTFinder
         KthSmallestElementInBSTFinder kthSmallestElementInBSTFinder = new KthSmallestElementInBSTFinderImpl();
         int kthSmallestElement = kthSmallestElementInBSTFinder.findKthSmallestElement(Tree, 9);
         System.out.println(kthSmallestElement);
-        new ArrayList<>().sort();
     }
 
     public int findKthSmallestElement(Tree root, int k) {
