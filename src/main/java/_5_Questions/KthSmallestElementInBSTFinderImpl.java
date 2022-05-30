@@ -3,6 +3,7 @@ package _5_Questions;
 import ent.Tree;
 import util.AlgoUtil;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 interface KthSmallestElementInBSTFinder {
@@ -16,6 +17,7 @@ class KthSmallestElementInBSTFinderImpl implements KthSmallestElementInBSTFinder
         KthSmallestElementInBSTFinder kthSmallestElementInBSTFinder = new KthSmallestElementInBSTFinderImpl();
         int kthSmallestElement = kthSmallestElementInBSTFinder.findKthSmallestElement(Tree, 9);
         System.out.println(kthSmallestElement);
+        new ArrayList<>().sort();
     }
 
     public int findKthSmallestElement(Tree root, int k) {

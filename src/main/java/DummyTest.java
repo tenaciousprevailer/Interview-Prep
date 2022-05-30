@@ -1,9 +1,14 @@
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.PriorityQueue;
 
-public class DummyTest {
+public class DummyTest  implements Comparable<DummyTest> {
+    @Override
+    public int compareTo(DummyTest o) {
+        return 0;
+    }
+
     enum Direction {
         DOWN, UP
     }
@@ -27,5 +32,8 @@ public class DummyTest {
                         .thenComparingInt(o -> ((DirectedPosition) o[1]).y)
         );
         int a = 999999999;
+
+        PriorityQueue<DummyTest> pq = new PriorityQueue<>(1, Comparator.naturalOrder());
+
     }
 }
